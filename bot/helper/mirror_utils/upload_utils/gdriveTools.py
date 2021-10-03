@@ -373,6 +373,7 @@ class GoogleDriveHelper:
                 dir_id = self.create_directory(meta.get('name'), parent_id)
                 self.cloneFolder(meta.get('name'), meta.get('name'), meta.get('id'), dir_id)
                 durl = self.__G_DRIVE_DIR_BASE_DOWNLOAD_URL.format(dir_id)
+                murl = requests.get(f'https://{SHORTENER}/api?api={SHORTENER_API}&url={durl}&format=text').text
                 if self.is_cancelled:
                     LOGGER.info("Deleting cloned data from Drive...")
                     msg = self.deletefile(durl)
@@ -380,6 +381,7 @@ class GoogleDriveHelper:
                     return "your clone has been stopped and cloned data has been deleted!", "cancelled"
                 msg += f'<b>☞ 📂Filename : </b><code>{meta.get("name")}</code>\n<b>Size: </b><code>{get_readable_file_size(self.transferred_size)}</code>'
                 msg += f'\n<b>☞ 🌀Type : </b><code>Folder</code>'
+                msg += f'\n<b>☞ link : </b><code>{murl}</code>'
                 msg += f'\n<b>☞ Powerd by : @budy_RangerDark</b>'
                 buttons = button_build.ButtonMaker()
                 if SHORTENER is not None and SHORTENER_API is not None:
